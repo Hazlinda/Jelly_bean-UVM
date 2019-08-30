@@ -37,19 +37,24 @@ http://cluelogic.com/2011/07/uvm-tutorial-for-candy-lovers-overview/
     /////Transaction.sv////
     ///////////////////////
     ///////////////////////
-    
-    
     class jelly_bean_transaction extends uvm_sequence_item;
+    
       typedef enum bit [2:0] {NO_FLAVOR, APPLE, BLUEBERRY, BUBBLE_GUM, CHOCOLATE} flavor_e;
       typedef enum bit [1:0] {RED, GREEN, BLUE} color_e;
       typedef enum bit [1:0] {UNKNOWN, YUMMY, YUCKY} taste_e;
 
+     ///////////////////////////////////
+     //declaring the transaction items//
+     ///////////////////////////////////
       rand flavor_e flavor;
       rand color_e color;
       rand bit sugar_free;
       rand bit sour;
       taste_e taste;
   
+      ////////////////////////////////////////////////////////
+      //constraint, to generate flavor and color//////////////
+      ////////////////////////////////////////////////////////
       constraint flavor_color_c{
         flavor != NO_FLAVOR;
         flavor == APPLE -> color != BLUE;
@@ -72,7 +77,10 @@ http://cluelogic.com/2011/07/uvm-tutorial-for-candy-lovers-overview/
 
     class sugar_free_jelly_bean_transaction extends jelly_bean_transaction;
       `uvm_object_utils(sugar_free_jelly_bean_transaction)
-
+      
+      /////////////////////////////////////////////////
+      //constraint, to generate sugarfree//////////////
+      /////////////////////////////////////////////////
       constraint sugar_free_c{
         sugar_free == 1;
       }
@@ -126,6 +134,7 @@ http://cluelogic.com/2011/07/uvm-tutorial-for-candy-lovers-overview/
       modport slave_mp ( input clk, flavor, color, sugar_free, sour, output taste );
       modport master_sync_mp( clocking master_cb );
       modport slave_sync_mp ( clocking slave_cb  );
+    
     endinterface: jelly_bean_if
 
 
